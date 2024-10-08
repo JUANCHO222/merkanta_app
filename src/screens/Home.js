@@ -1,17 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StyleSheet, Text, View, Alert } from 'react-native';
+import { BtnPrimary, TxtEntrada, Footer } from '../components';
 
 
 export default function Home({navigation}) {
     return (
         <View style={styles.container}>
-            <Text>Hola Mundo</Text>
-            <Button
-        title="Ir a producto..."
-        onPress={() => navigation.navigate('Producto')}
-      />
+            <View style={styles.content}>
+                <TxtEntrada 
+                placeholder='Ingrese un numero'
+                keyboardType='none'
+                maxLength={13}/>
+                <TxtEntrada 
+                placeholder='Ingrese un numero'
+                keyboardType='none'
+                maxLength={13}/>
+                <BtnPrimary texto='cloor' color='green'/>
+            </View>
+            <Footer/>
         </View>
     );
 }
@@ -20,9 +26,16 @@ export default function Home({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'red',
-        alignItems: 'center',
+        justifyContent: 'space-between', // Asegura que el footer esté en la parte inferior
+        padding: 10,
+        margin: 10,
+    },
+    content: {
+        flex: 3,
         justifyContent: 'center',
-        borderBlockColor: 'red',
-    }
+        alignItems: 'center',
+        borderStyle: 'solid',
+        borderColor: 'black',
+        borderWidth: 2,
+    },
 });
