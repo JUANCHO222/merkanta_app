@@ -8,7 +8,8 @@ import tiktok from '../../assets/icons/icons8-youtube-svg.png';
 export default function Footer() {
   return (
     <View style={styles.footer}>
-       <View style={styles.socialIcons}>
+      <View style={styles.footerUp}>
+      <View style={styles.socialIcons}>
           <Image source={facebook} style={styles.icon} />
           <Image source={youtube} style={styles.icon} />
           <Image source={instagram} style={styles.icon} />
@@ -16,13 +17,14 @@ export default function Footer() {
         </View>
         <Image
           source={require('../../assets/images/mekanta_logo-removebg-preview.png')}
-          style={{ width: 182, height: 67,alignSelf:'center',    borderWidth: 2 }}
+          style={{ width: 200, height: 50, alignSelf: 'center'}}
         />
         <Text style={styles.textUp}>
           Sándalo 83, Santa María Insurgentes, Cuauhtémoc, 06430 Ciudad de México, CDMX
         </Text>
         <Text style={styles.textUp}>Términos y condiciones</Text>
-      
+      </View>
+
       <View style={styles.footerDown}>
         <Text style={{ fontSize:10 }}>Procesamos el pago y el envío con</Text>
         <Image
@@ -41,22 +43,20 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#00A76F',
     justifyContent: 'space-between', // Centra el contenido verticalmente si hay espacio suficiente
+    alignSelf: 'stretch', // 
+    alignItems: 'center', // Centra el contenido horizontalmente
+
   },
   footerUp: {
     width: '100%',
-    height: 220,
+    height: 150,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-
+    padding: 10,
   },
   socialIcons: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    alignItems: 'center',
-    borderWidth: 2,
-    
   },
   footerDown: {
     width: '100%',
@@ -64,17 +64,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#D9D9D9',
     justifyContent: 'center',
-    flexDirection: 'row',
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2,
   },
   footerDownImage: {
     width: 72,
     height: 34,
-    borderWidth: 2,
-    
   },
   icon: {
     width: 24,
@@ -86,7 +80,5 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginBottom: 5,
-    borderWidth: 2,
-
   },
 });
