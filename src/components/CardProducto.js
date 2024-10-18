@@ -19,27 +19,24 @@ export default function CardProducto({ onPress }) {
     );
 }
 
-// TODO: Remove this when we remove the default styles from the component components instead 
 const styles = StyleSheet.create({
     card: {
         width: 148,
         height: 273,
         backgroundColor: '#fff',
-        borderRadius: 8,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
         shadowRadius: 4,
-        elevation: 5, // Sombra en Android
+        // elevation: 5, // Sombra en Android
         overflow: 'hidden', // Para cortar el contenido si se sale del borde
-        marginBottom: 9,
+        // marginBottom: 9,
         justifyContent: 'flex-start', // Alinea el contenido en la parte superior
     },
     image: {
         width: 148,
         height: 150,
-        borderTopLeftRadius: 8,
-        borderTopRightRadius: 8,
+        
     },
     cardContent: {
         padding: 10,

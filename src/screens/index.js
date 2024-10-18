@@ -1,4 +1,4 @@
-export { default as Inicio       } from './Home';
+export { default as Inicio       } from '../screens/Home/Home';
 export { default as Producto     } from './Products/Product';
 export { default as Categoria    } from './Products/Categorie';
 export { default as Notificacion } from './Menu/Notification';
