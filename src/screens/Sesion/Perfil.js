@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 
-function Perfil() {
+function Perfil( {navigation} ) {
   return (
     <View>
         <Text>Mi Perfil</Text>

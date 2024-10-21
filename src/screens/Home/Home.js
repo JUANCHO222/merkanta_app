@@ -1,11 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView,SafeAreaView  } from 'react-native';
 import { Footer, ProductoDestacado  } from '../../components/index';
 
 export default function Home({ navigation }) {
     return (
+    <SafeAreaView style={styles.safeArea}>
+        <StatusBar hidden={true}/>
         <View style={styles.container}>
-            <StatusBar style="inverted"/>
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 <View style={styles.content}>
                     <ProductoDestacado/>
@@ -13,10 +14,15 @@ export default function Home({ navigation }) {
             <Footer  style={styles.footer}/>
             </ScrollView>
         </View>
+    </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#D9D9D9', // Color de fondo de la barra de estado
+    },
     container: {
         flex: 1,
         flexDirection: 'column',
@@ -40,4 +46,3 @@ const styles = StyleSheet.create({
         borderColor: '#ccc', // Color de la línea superior
     },
 });
-
