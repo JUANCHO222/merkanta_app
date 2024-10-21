@@ -1,7 +1,7 @@
 import React from 'react'
 import {Text, View} from 'react-native'
 
-function ChangePassword() {
+function ChangePassword({navigation}) {
   return (
     <View>
         <Text>ChangePassword</Text>

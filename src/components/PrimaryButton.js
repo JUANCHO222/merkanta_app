@@ -3,10 +3,11 @@ import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 
 
-const PrimaryButton = ({ onPress, texto, color }) => {
+const PrimaryButton = ({ onPress, texto, color, largo, ancho }) => {
   return (
     <TouchableOpacity 
-      style={[styles.BtnPrimary, { backgroundColor: color }]} 
+      style={[styles.BtnPrimary, { backgroundColor: color,  width: largo,
+        height: ancho, }]} 
       onPress={onPress}  // El evento onPress debe ser pasado como prop
       activeOpacity={0.7} // Controla la opacidad al hacer clic
     >
@@ -17,8 +18,6 @@ const PrimaryButton = ({ onPress, texto, color }) => {
 
 const styles = StyleSheet.create({
   BtnPrimary: {
-    width: 312,
-    height: 36,
     borderRadius:12,
     justifyContent: 'center',
     alignItems: 'center',
