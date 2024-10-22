@@ -2,94 +2,96 @@ import * as React from 'react';
 import 'react-native-gesture-handler';
 import { Inicio, Notificacion, Historial, Perfil } from '../screens';
 import { createDrawerNavigator,DrawerItem  } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation, DrawerActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CustomDrawerContent from '../components/CustomDrawerContent'; // Importa el contenido personalizado
+import {useEffect} from 'react';
 
-// Iconos
-import Entypo from '@expo/vector-icons/Entypo';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+// *Iconos
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
-export const StackNavigator = () => {
-    const handleLogout = () => {
-        // Aquí puedes implementar la lógica para cerrar sesión
-        Alert.alert("Cerrar sesión", "¿Estás seguro de que deseas cerrar sesión?", [
-            {
-                text: "Cancelar",
-                style: "cancel"
+export const StackNavigation = () => {
+    const navigation = useNavigation();
+    return(
+        <Stack.Navigator screenOptions={{
+            headerStyle: {
+                backgroundColor: '#00A76F', // Color de fondo del header
             },
-            {
-                text: "Cerrar sesión",
-                onPress: () => {
-                    // Lógica para cerrar sesión
-                    console.log("Sesión cerrada");
-                    // Redirigir a la pantalla de inicio o realizar otra acción
+            headerTintColor: '#ffffff', // Color del texto del header
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            drawerActiveTintColor: '#000',
+            drawerActiveBackgroundColor: '#d0fbe4',
+            drawerInactiveTintColor: '#000',
+            
+        }}>
+            <Stack.Screen 
+            name="InicioStack"
+            component={Inicio}
+            options={{
+                headerTitle:"",
+                headerRight: () => (
+                    <Icon
+                        name="cart" // Nombre del icono
+                        size={25} // Tamaño del icono
+                        color="white" // Color del icono
+                        onPress={() => alert('Ícono presionado')} // Acción al presionar el icono
+                        style={{ marginRight: 15 }} // Espaciado del icono
+                    />
+                    ),      
+                headerLeft: () => {
+                    return (
+                        <Icon
+                            name='menu'
+                            size={30}
+                            color={'#fff'}
+                            onPress={()=> navigation.dispatch(DrawerActions.openDrawer())}
+                        />
+                    );
                 }
-            }
-        ]);
-    };
+            }} />
+            <Stack.Screen name="Mis notificaciones" component={Notificacion} />
+            <Stack.Screen name="Mi Historial"          component={Historial} />
+            <Stack.Screen name="Mi Perfil"             component={Perfil} />
+        </Stack.Navigator>
+    );
+}
+
+export const DrawNavigation = () => {
+    return(
+        <Drawer.Navigator
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+        screenOptions={{
+            headerShown:false,
+            drawerActiveTintColor: '#000',
+            drawerActiveBackgroundColor: '#d0fbe4',
+            drawerInactiveTintColor: '#000',
+        }}
+    >
+        <Drawer.Screen
+            name="InicioDrawer"
+            component={StackNavigation}
+            options={{
+                drawerLabel: 'Inicio',
+                drawerIcon: ({ color, size }) => (
+                    <Icon name="home" color={color} size={size} />
+                ),
+            }}
+        />
+        
+    </Drawer.Navigator>
+    );
+}
+
+export const StackNavigator = () => {
+   
     return (
         <NavigationContainer>
-            <Drawer.Navigator
-                initialRouteName="Inicio"
-                drawerContent={(props) => <CustomDrawerContent {...props} />}
-                screenOptions={{
-                    headerStyle: {
-                        backgroundColor: '#00A76F', // Color de fondo del header
-                    },
-                    headerTintColor: '#ffffff', // Color del texto del header
-                    headerTitleStyle: {
-                        fontWeight: 'bold',
-                    },
-                    drawerActiveTintColor: '#000',
-                    drawerActiveBackgroundColor: '#d0fbe4',
-                    drawerInactiveTintColor: '#000',
-                }}
-            >
-                <Drawer.Screen
-                    name="Inicio"
-                    component={Inicio}
-                    options={{
-                        drawerLabel: 'Inicio',
-                        drawerIcon: ({ color, size }) => (
-                            <Entypo name="home" color={color} size={size} />
-                        ),
-                    }}
-                />
-                <Drawer.Screen
-                    name="Historial de compras"
-                    component={Historial}
-                    options={{
-                        drawerIcon: ({ color, size }) => (
-                            <FontAwesome5 name="shopping-bag" color={color} size={size} />
-                        ),
-                    }}
-                />
-                <Drawer.Screen
-                    name="Notificaciones"
-                    component={Notificacion}
-                    options={{
-                        drawerIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="bell" color={color} size={size} />
-                        ),
-                    }}
-                />
-                <Drawer.Screen
-                    name="Perfil"
-                    component={Perfil}
-                    options={{
-                        drawerIcon: ({ color, size }) => (
-                            <FontAwesome6 name="user-large" color={color} size={size} />
-                        ),
-                    }}
-                />
-                
-            </Drawer.Navigator>
+            <DrawNavigation/>
         </NavigationContainer>
     );
 };

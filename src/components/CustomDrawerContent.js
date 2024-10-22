@@ -1,15 +1,51 @@
+// * Importacion de componentes
 import React from 'react';
 import { View, Text, StyleSheet, Button, Alert, Image } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList,DrawerItem } from '@react-navigation/drawer';
 import PrimaryButton from './PrimaryButton';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import Foundation from '@expo/vector-icons/Foundation';
+import {useNavigation} from '@react-navigation/native';
+import { Inicio, Notificacion, Historial, Perfil } from '../screens';
+
+// * Importacion de iconos
+import Ionicons from '@expo/vector-icons/Ionicons';
 import mueblesIcon from '../../assets/icons/icons8-muebles-50.png';
 import aliBebIcon from '../../assets/icons/icons8-comida-vegetariana-50.png';
 import clothesIcon from '../../assets/icons/icons8-zapatillas-64.png';
 import saludIcon from '../../assets/icons/icons8-máscara-de-protección-50.png';
 import cuidadoIcon from '../../assets/icons/icons8-limpieza-50.png';
+
+const DrawerList = [
+    {icon: 'bag',           label: 'Perfil',       navigateTo: 'Mi Perfil'},
+    {icon: 'notifications', label: 'Historial',    navigateTo: 'Mi Historial'},
+    {icon: 'person',        label: 'Notificacion', navigateTo: 'Mis notificaciones'},
+  ];
+
+  const DrawerLayout = ({icon, label, navigateTo}) => {
+    const navigation = useNavigation();
+    // console.log(userData);
+    return (
+        <DrawerItem
+        icon={({color, size}) => <Ionicons name={icon} color='black' size={size} />}
+        label={label} labelStyle={{color: 'black'}}
+        onPress={() => {
+        navigation.navigate(navigateTo);
+        }}
+      />
+    );
+  };
+
+  const DrawerItems = props => {
+    return DrawerList.map((el, i) => {
+      return (
+        <DrawerLayout
+          key={i}
+          icon={el.icon}
+          label={el.label}
+          navigateTo={el.navigateTo}
+        />
+      );
+    });
+  };
 
 const CustomDrawerContent = (props) => {
     const handleLogout = () => {
@@ -29,26 +65,41 @@ const CustomDrawerContent = (props) => {
         ]);
     };
 
+    // * Seccion de los componentes del menu de cajon
     return (
         <DrawerContentScrollView {...props}>
             <View style={styles.container}>
-            <PrimaryButton style={styles.button} onPress={() => console.log('hola')} color='black' texto='iniciar' largo='100%'
-            ancho={50}/>
+            <PrimaryButton 
+                style={styles.button} 
+                onPress={() => console.log('hola')} 
+                color='black' 
+                texto='iniciar' 
+                largo='100%'
+                ancho={50}
+            />
             </View>
             <DrawerItemList {...props} />
+            <DrawerItems  />
             {/* Agregar el separador aquí */}
             <View style={styles.separatorContainer}>
-                <View style={styles.line} />
-                <Text style={styles.separatorText}>Categorías</Text>
-                <View style={styles.line} />
+                <View 
+                    style={styles.line} />
+                <Text 
+                    style={styles.separatorText}>Categorías</Text>
+                <View 
+                    style={styles.line} />
             </View>
             {/* Botones del menu */}
             <DrawerItem style={{color: 'black'}}
             label="Hogar, muebles y jardin"
-            icon={({ size }) => (
-                <Image source={mueblesIcon} name="icons8-muebles-50.png" style={{ width: size, height: size }}/>
-            )}
-            labelStyle={{color:'black'}} onPress={() => alert('Link to help')}
+                icon={({ size }) => (
+                    <Image 
+                        source={mueblesIcon} 
+                        name="icons8-muebles-50.png" 
+                        style={{ width: size, height: size }}/>
+                )}
+                labelStyle={{color:'black'}}
+                onPress={() => alert('Link to help')}
             />
             <DrawerItem style={{color: 'black'}}
             label="Alimentos y bebidas"
@@ -91,7 +142,7 @@ const CustomDrawerContent = (props) => {
             label="Acerca de Merkanta" 
             labelStyle={{color:'black'}} onPress={() => alert('Link to help')} color="black"
             icon={({ color, size }) => (
-                <MaterialCommunityIcons name="information-outline" size={24} color="black" />
+                <Ionicons name="information-circle" size={24} color="black" />
             )}
             />
             
@@ -99,7 +150,7 @@ const CustomDrawerContent = (props) => {
             label="Contactanos"
             labelStyle={{color:'black'}} onPress={() => alert('Link to help')}
             icon={(color, size) => (
-                <Foundation name="telephone" size={24} color="black" />
+                <Ionicons name="call-sharp" size={24} color="black" />
             )}
             />
         </DrawerContentScrollView>
@@ -109,13 +160,13 @@ const CustomDrawerContent = (props) => {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height:180,
+        height:170,
         padding: 20,
         backgroundColor: '#00A76F',
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 10,
-        marginTop:-36
+        marginTop:-10
 
     },
     title: {

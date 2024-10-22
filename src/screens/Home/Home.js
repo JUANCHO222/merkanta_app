@@ -5,7 +5,6 @@ import { Footer, ProductoDestacado  } from '../../components/index';
 export default function Home({ navigation }) {
     return (
     <SafeAreaView style={styles.safeArea}>
-        <StatusBar hidden={true}/>
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 <View style={styles.content}>
