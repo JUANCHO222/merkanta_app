@@ -15,12 +15,12 @@ import saludIcon from '../../assets/icons/icons8-máscara-de-protección-50.png'
 import cuidadoIcon from '../../assets/icons/icons8-limpieza-50.png';
 
 const DrawerList = [
-    {icon: 'bag',           label: 'Perfil',       navigateTo: 'Mi Perfil'},
-    {icon: 'notifications', label: 'Historial',    navigateTo: 'Mi Historial'},
-    {icon: 'person',        label: 'Notificacion', navigateTo: 'Mis notificaciones'},
-  ];
+    {icon: 'person',           label: 'Perfil',       navigateTo: 'Mi Perfil'},
+    {icon: 'bag', label: 'Historial',    navigateTo: 'Mi Historial'},
+    {icon: 'notifications',        label: 'Notificacion', navigateTo: 'Mis notificaciones'},
+];
 
-  const DrawerLayout = ({icon, label, navigateTo}) => {
+const DrawerLayout = ({icon, label, navigateTo}) => {
     const navigation = useNavigation();
     // console.log(userData);
     return (
@@ -73,14 +73,14 @@ const CustomDrawerContent = (props) => {
                 style={styles.button} 
                 onPress={() => console.log('hola')} 
                 color='black' 
-                texto='iniciar' 
+                texto='Iniciar Sesion' 
                 largo='100%'
                 ancho={50}
             />
             </View>
             <DrawerItemList {...props} />
-            <DrawerItems  />
-            {/* Agregar el separador aquí */}
+            <DrawerItems />
+            {/*Agregar el separador aquí */}
             <View style={styles.separatorContainer}>
                 <View 
                     style={styles.line} />

@@ -6,6 +6,7 @@ import { NavigationContainer, useNavigation, DrawerActions } from '@react-naviga
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CustomDrawerContent from '../components/CustomDrawerContent'; // Importa el contenido personalizado
 import {useEffect} from 'react';
+import {Busqueda} from '../components/index'
 
 // *Iconos
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -33,8 +34,14 @@ export const StackNavigation = () => {
             name="InicioStack"
             component={Inicio}
             options={{
-                headerTitle:"",
-                headerRight: () => (
+                headerTitleAlign: 'center',
+                headerTitle: () => (
+                    <Busqueda
+                      onSearch={(text) => {
+                        console.log('Buscando:', text); // Maneja la búsqueda aquí
+                      }}
+                    />
+                  ),                headerRight: () => (
                     <Icon
                         name="cart" // Nombre del icono
                         size={25} // Tamaño del icono

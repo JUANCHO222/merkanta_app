@@ -10,3 +10,4 @@ export { default as TarjetaNotificacion    } from './CardNotification';
 export { default as TarjetaHistorial       } from './CardHistorial';
 export { default as CardPromos             } from './ButtonImagen';
 export { default as ProductoDestacado      } from './CardProductoDestacado';
+export { default as Busqueda               } from './SearchBar';
