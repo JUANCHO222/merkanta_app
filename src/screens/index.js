@@ -1,0 +1,10 @@
+export { default as Inicio          } from './Home/Home';
+export { default as Producto        } from './Products/Product';
+export { default as Categoria       } from './Products/Categorie';
+export { default as Notificacion    } from './Menu/Notification';
+export { default as Historial       } from './Menu/PurchaseHistory';
+export { default as IniciarSesion   } from './Sesion/Login';
+export { default as Formulario      } from './Sesion/Formulario';
+export { default as Registro        } from './Sesion/SignUp';
+export { default as Perfil          } from './Sesion/Perfil';
+export { default as Carrito         } from './Products/ShoppingCart';
