@@ -190,14 +190,19 @@ export default function UpProduct() {
 
         <PrimaryButton ancho={45} color={'green'} texto={'Guardar Producto'} bordered={false} onPress={guardarProducto} />
 
-        <Separador />
+        <Separador texto={'Seleccione una imagen'} />
 
-        <PrimaryButton ancho={45} color={'blue'} bordered={false} texto="Seleccionar Imagen" onPress={seleccionarImagen} />
-        {imagen && <Image source={{ uri: imagen }} style={styles.imagen} />}
+        <View style={styles.containerImage}>
+          {imagen && <Image source={{ uri: imagen }} style={styles.imagen} />}
+        </View>
+
+        <View style={{marginBottom:10}}>
+          <PrimaryButton ancho={45} color={'blue'} bordered={false} texto="Seleccionar Imagen" onPress={seleccionarImagen} />
+        </View>
 
         <PrimaryButton ancho={45} color={'blue'} texto={'Subir Imagen'} bordered={false} onPress={subirImagen} />
 
-        <Separador />
+        <Separador texto={'Limpiar campos'}/>
         
         <PrimaryButton ancho={45} color={'red'} bordered={false} texto="Limpiar Campos" onPress={() => {
           setNombre('');
@@ -220,9 +225,7 @@ const styles = StyleSheet.create({
   },
   imagen: {
     width: '100%',
-    height: 200,
-    marginVertical: 10,
-    borderRadius: 10,
+    height: 300,
   },
   label: {
     fontSize: 12,
@@ -230,4 +233,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'flex-start',
   },
+  containerImage:{
+    borderWidth:1,
+    borderRadius:5,
+    marginBottom:15,
+    width:300,
+    height:300,
+    alignSelf: 'center'
+  }
 });

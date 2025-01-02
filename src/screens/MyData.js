@@ -18,15 +18,17 @@ export default function MyData() {
           <Text>Telefono</Text>
           <EntradaTexto placeholder={'Telefono'} iconName={'phone'}/>
           <Text>Email</Text>
-          <EntradaTexto placeholder={'Email'} iconName={'mail'}/> 
+          <EntradaTexto placeholder={'Email'} iconName={'mail'} disabled={true}/> 
+          <View style={{marginBottom:15}}>
+            <PrimaryButton
+              texto={'Guardar'}
+              color={'#0abf7e'}
+              ancho={45}
+              bordered={false}
+              onPress={() => {}}
+            />
+          </View>
 
-          <PrimaryButton
-            texto={'Guardar'}
-            color={'#0abf7e'}
-            ancho={45}
-            bordered={false}
-            onPress={() => {}}
-          />
           <PrimaryButton
             texto={'Cancelar'}
             color={'red'}
@@ -38,8 +40,15 @@ export default function MyData() {
       ) : (
           <>
             <View style={[styles.cardData]}>
-              <Text style={[styles.labelTitle]}>Dirección</Text>
-              <Text style={[styles.textDescription]}>Calle 123, Colonia ABC, Ciudad XYZ, Estado de México, 55555</Text>
+              <Text style={[styles.labelTitle]}>Datos Personales</Text>
+              <Text style={[styles.textDescription]}>Nombre:</Text>
+              <Text style={[styles.textDescription]}></Text>
+              <Text style={[styles.textDescription]}>Apellidos:</Text>
+              <Text style={[styles.textDescription]}></Text>
+              <Text style={[styles.textDescription]}>Email:</Text>
+              <Text style={[styles.textDescription]}></Text>
+              <Text style={[styles.textDescription]}>Numero de telefono:</Text>
+              <Text style={[styles.textDescription]}></Text>
               <PrimaryButton 
                 texto={'Editar'}
                 color={'#0abf7e'}
@@ -77,4 +86,9 @@ const styles = StyleSheet.create({
       justifyContent:'flex-start',
       overflow: 'hidden', // Asegura que el gradiente no se salga del botón
     },
+    labelTitle:{
+      fontSize:16,
+      fontWeight:'bold',
+      marginBottom:5
+    }
 })

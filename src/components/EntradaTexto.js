@@ -8,11 +8,11 @@ const EntradaTexto = ({
   placeholder, 
   value, 
   onChangeText, 
-  iconName // Nombre del ícono predeterminado
+  iconName, // Nombre del ícono predeterminado
+  disabled // Nueva prop para determinar si está deshabilitado
 }) => {
   return (
-    <View style={styles.InputContainer}>
-      
+    <View style={[styles.InputContainer, disabled && styles.disabledContainer]}>
       <TextInput
         style={styles.TextInput}
         placeholder={placeholder}
@@ -23,6 +23,7 @@ const EntradaTexto = ({
         returnKeyType="done"
         value={value}
         onChangeText={onChangeText}
+        editable={!disabled} // Deshabilita el TextInput si la prop disabled es true
       />
       <MaterialIcons name={iconName} size={24} color="#666" style={styles.icon} />
     </View>
@@ -42,6 +43,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', // Separa el ícono y el campo de texto
     borderWidth: 1, // Para visualización clara del borde
     borderColor: '#ddd',
+  },
+  disabledContainer: {
+    backgroundColor: '#f0f0f0', // Color de fondo cuando está deshabilitado
+    borderColor: '#ccc', // Color del borde cuando está deshabilitado
   },
   TextInput: {
     flex: 1, // El TextInput ocupa todo el espacio restante

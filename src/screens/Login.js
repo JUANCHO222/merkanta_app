@@ -35,7 +35,7 @@ const LoginScreen = () => {
     setIsLoading(true); // Activar indicador de carga
     try {
       const response = await fetch(
-        'https://ffd7-2806-2f0-9281-fc87-3813-aa6b-aeb9-615b.ngrok-free.app/api/Usuario/Login',
+        'https://4f6b-2806-2f0-9180-ce1f-39d2-f26-b7b9-fe56.ngrok-free.app/api/Usuario/Login',
         {
           method: 'POST',
           headers: {

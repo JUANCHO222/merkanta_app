@@ -6,32 +6,107 @@ import PrimaryButton from '../components/PrimaryButton'
 
 export default function MyDirection() {
 
+  const [numeroExterior, setNumeroExterior] = useState('');
+  const [numeroInterior, setNumeroInterior] = useState('');
+  const [calle, setCalle] = useState('');
+  const [colonia, setColonia] = useState('');
+  const [municipio, setMunicipio] = useState('');
+  const [codigoPostal, setCodigoPostal] = useState('');
+  const [ciudad, setCiudad] = useState('');
+  const [estado, setEstado] = useState('');
+  const [pais, setPais] = useState('');
+  const [referencia, setReferencia] = useState('');
+
   const [isEditing, setIsEditing] = useState(false);
   return (
     <View style={[styles.container]}>
       <ScrollView contentContainerStyle={{padding:20}}>
         {isEditing ? (
           <>
-             <Text>Calle</Text>
-        <EntradaTexto placeholder={'Calle'}/>
-        <Text>Colonia</Text>
-        <EntradaTexto placeholder={'Colonia'}/>
-        <Text>Ciudad</Text>
-        <EntradaTexto placeholder={'Ciudad'}/>
-        <Text>Estado</Text>
-        <EntradaTexto placeholder={'Estado'}/>
-        <Text>Codigo Postal</Text>
-        <EntradaTexto placeholder={'Codigo Postal'}/>
-        <Text>Pais</Text>
-        <EntradaTexto placeholder={'Pais'}/>
+         <Text style={styles.label}>Calle</Text>
+          <EntradaTexto
+            placeholder={'Calle'}
+            value={calle}
+            onChangeText={setCalle}
+          />
 
-        <PrimaryButton 
-          texto={'Guardar'}
-          color={'#0abf7e'}
-          ancho={45}
-          bordered={false}
-          onPress={() => {}}
-        />
+          <View style={styles.numberFieldsContainer}>
+            <Text style={styles.label}>Número Exterior</Text>
+            <EntradaTexto
+              placeholder={'Número Exterior'}
+              value={numeroExterior}
+              onChangeText={setNumeroExterior}
+            />
+          </View>
+
+          <View style={styles.numberFieldsContainer}>
+            <Text style={styles.label}>Número Interior</Text>
+            <EntradaTexto
+              placeholder={'Número Interior'}
+              value={numeroInterior}
+              onChangeText={setNumeroInterior}
+            />
+          </View>
+
+          <Text style={styles.label}>Colonia o Localidad</Text>
+          <EntradaTexto
+            placeholder={'Colonia o Localidad'}
+            value={colonia}
+            onChangeText={setColonia}
+          />
+
+          <Text style={styles.label}>Municipio o Alcaldía</Text>
+          <EntradaTexto
+            placeholder={'Municipio o Alcaldía'}
+            value={municipio}
+            onChangeText={setMunicipio}
+          />
+
+          <Text style={styles.label}>Código Postal</Text>
+          <EntradaTexto
+            placeholder={'Código Postal'}
+            value={codigoPostal}
+            onChangeText={setCodigoPostal}
+          />
+
+          <Text style={styles.label}>Ciudad o Pueblo</Text>
+          <EntradaTexto
+            placeholder={'Ciudad o Pueblo'}
+            value={ciudad}
+            onChangeText={setCiudad}
+          />
+
+          <Text style={styles.label}>Estado</Text>
+          <EntradaTexto
+            placeholder={'Estado'}
+            value={estado}
+            onChangeText={setEstado}
+          />
+
+          <Text style={styles.label}>País</Text>
+          <EntradaTexto
+            placeholder={'País'}
+            value={pais}
+            onChangeText={setPais}
+          />
+
+          <Text style={styles.label}>Referencia</Text>
+          <EntradaTexto
+            placeholder={'Referencia'}
+            value={referencia}
+            onChangeText={setReferencia}
+          />
+
+        <View style={{marginBottom:15}}>
+          <PrimaryButton 
+            texto={'Guardar'}
+            color={'#0abf7e'}
+            ancho={45}
+            bordered={false}
+            onPress={() => {}}
+          />
+        </View>
+        
         <PrimaryButton 
           texto={'Cancelar'}
           color={'red'}
@@ -55,6 +130,14 @@ export default function MyDirection() {
                 onPress={() => setIsEditing(true)}
               />
             </View>
+            <PrimaryButton 
+                texto={'Agregar +'}
+                color={'#0abf7e'}
+                ancho={45}
+                largo={'100%'}
+                bordered={false}
+                onPress={() => {}}
+              />
           </>
         )}
      

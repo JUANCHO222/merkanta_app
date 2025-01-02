@@ -91,8 +91,8 @@ export default function PrincipalForm() {
 
   return (
     <View style={GlobalStyles.container}>
-      <View style={GlobalStyles.content}>
-        <ScrollView>
+        <ScrollView contentContainerStyle={{ padding: 20 }}>
+          <Separador texto={'Datos personales'}/>
           <Text style={styles.label}>Nombre</Text>
           <EntradaTexto
             placeholder={'Nombre'}
@@ -117,7 +117,8 @@ export default function PrincipalForm() {
             onChangeText={setTelefono}
           />
 
-          {/* <Separador />
+          <Separador texto={'Dirección'}/>
+          {/* 
 
           <Text style={styles.label}>Calle</Text>
           <EntradaTexto
@@ -201,7 +202,6 @@ export default function PrincipalForm() {
             onPress={handleWriteData}
           />
         </ScrollView>
-      </View>
     </View>
   );
 }
