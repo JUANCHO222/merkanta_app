@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
+import {View, SafeAreaView, FlatList, Button} from 'react-native';
+import CardProductsCategories from '../components/CardProductsCategories';
+import CardFeaturedProduct from '../components/CardFeaturedProduct';
+import CardCategories from '../components/CardCategories';
 import { ApolloProvider } from '@apollo/client';
 import client from '../apollo/client'; // Importa el cliente de Apollo que configuraste
-import {View, SafeAreaView, FlatList, Button} from 'react-native';
-import CardProductsCategories from '../components/CardCategories';
-import CardFeaturedProduct from '../components/CardFeaturedProduct';
-import Footer from '../components/Footer';
 import { GlobalStyles } from '../styles/GlobalStyles';
-
 import { useNavigation } from '@react-navigation/native';
-import ProductSearch from '../components/ProductSearch';
 export default function Home(){
     const navigation = useNavigation();
 
@@ -36,11 +34,12 @@ export default function Home(){
                     renderItem={() => (
                     <>
                         <View style={GlobalStyles.content}>
+
                         <CardProductsCategories 
                         collectionHandle="covid-19"
                         onPress={() => navigation.navigate('Categoria',{collectionHandle:'covid-19'}
-
                         )}/>
+                        <CardCategories title="Categorías" />
                         <CardProductsCategories 
                         collectionHandle="miscelaneos-y-abarrotes" 
                         onPress={() => navigation.navigate('Categoria',{collectionHandle:'miscelaneos-y-abarrotes'})}/>
