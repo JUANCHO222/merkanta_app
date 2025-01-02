@@ -13,21 +13,22 @@ export default function ShoppingCart({ navigation }) {
   useEffect(() => {
     const loadStoredIds = async () => {
       try {
-        const ids = await AsyncStorage.getItem('idsArray'); // Leer los IDs del local storage
-        if (ids) {
-          setProductIds(JSON.parse(ids)); // Parsear y almacenar los IDs
-        } else {
-          setProductIds([]); // Si no hay nada en el almacenamiento, inicializa como vacío
-        }
+        const ids = await AsyncStorage.getItem('idsArray');
+        setProductIds(JSON.parse(ids) || []);
       } catch (error) {
+        console.error('Error al cargar productos:', error);
         Alert.alert('Error', 'No se pudieron cargar los productos del carrito.');
       }
-      setLoading(false);
     };
-
-    loadStoredIds();
-  }, []);
-
+  
+    // Escuchar eventos de navegación para sincronizar siempre
+    const unsubscribe = navigation.addListener('focus', loadStoredIds);
+  
+    loadStoredIds(); // Carga inicial
+  
+    return unsubscribe; // Limpiar el listener
+  }, [navigation]);
+  
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
       const ids = await AsyncStorage.getItem('idsArray');
@@ -46,28 +47,26 @@ export default function ShoppingCart({ navigation }) {
     }
   };
 
-  // Eliminar un ID del carrito
-  const removeId = async (id) => {
-    try {
-      // Filtra los IDs para eliminar el producto seleccionado
-      const updatedIds = productIds.filter((storedId) => storedId !== id);
-  
-      if (updatedIds.length === 0) {
-        // Si no quedan productos, vacía el carrito
-        await AsyncStorage.removeItem('idsArray'); // Elimina el almacenamiento del carrito
-        setProductIds([]); // Resetea el estado
-        Alert.alert('El carrito ahora está vacío.');
-      } else {
-        // Si todavía hay productos, guarda el estado actualizado
-        setProductIds(updatedIds);
-        await saveIds(updatedIds); // Persistimos los cambios en AsyncStorage
-        Alert.alert('Producto eliminado del carrito');
-      }
-    } catch (err) {
-      console.error('Error al actualizar IDs:', err);
-      Alert.alert('Ocurrió un error al intentar eliminar el producto.');
-    }
-  };
+ // Función para eliminar un ID del carrito
+ const removeId = async (id) => {
+  if (!id) {
+    Alert.alert('ID no válido');
+    return;
+  }
+
+  try {
+    const updatedIds = productIds.filter((storedId) => storedId !== id);
+    setProductIds(updatedIds); // Actualizar el estado local
+    await AsyncStorage.setItem('idsArray', JSON.stringify(updatedIds)); // Guardar en AsyncStorage
+
+    Alert.alert('Producto eliminado del carrito');
+  } catch (err) {
+    console.error('Error al eliminar producto:', err);
+    Alert.alert('Ocurrió un error al eliminar el producto del carrito.');
+  }
+};
+
+
   
   
   if (loading) {

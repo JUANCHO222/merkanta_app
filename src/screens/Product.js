@@ -51,33 +51,45 @@ export default function Products({ navigation }) {
 
   // Función para agregar un ID
   const addId = async (id) => {
-    console.log('Agregando ID:', id);
+    if (!id) {
+      Alert.alert('ID no válido');
+      return;
+    }
   
-    // Extraer el número del ID del producto (si es necesario)
-    const match = id.match(/\/(\d+)$/);
-    const productId = match ? match[1] : id;
+    try {
+      // Cargar los IDs actuales desde AsyncStorage para evitar inconsistencias
+      const storedIds = JSON.parse(await AsyncStorage.getItem('idsArray')) || [];
   
-    // Verificar si ya existe
-    if (!storedIds.includes(productId)) {
-      try {
-        // Actualiza el estado y AsyncStorage
-        const updatedIds = [...storedIds, productId];
-        setStoredIds(updatedIds);
-        await saveIds(updatedIds);
-        Alert.alert('Producto agregado al carrito');
-      } catch (err) {
-        console.error('Error al guardar IDs:', err);
+      // Verificar si el ID ya está en el carrito
+      if (storedIds.includes(id)) {
+        Alert.alert('El producto ya está en el carrito');
+        return;
       }
-    } else {
-      Alert.alert('El producto ya está en el carrito');
+  
+      // Actualizar el estado local y AsyncStorage
+      const updatedIds = [...storedIds, id];
+      setStoredIds(updatedIds);
+      await AsyncStorage.setItem('idsArray', JSON.stringify(updatedIds));
+  
+      Alert.alert('Producto agregado al carrito');
+    } catch (err) {
+      console.error('Error al agregar producto:', err);
+      Alert.alert('Ocurrió un error al agregar el producto al carrito.');
     }
   };
   
   
   const handleAddToCart = async () => {
-    await addId(product.id);
-    navigation.navigate('CarritoTab'); // Navega al carrito para forzar actualización
+    if (!currentVariant?.id) {
+      Alert.alert('Error', 'No se pudo agregar el producto al carrito.');
+      return;
+    }
+  
+    await addId(currentVariant.id);
+    navigation.navigate('CarritoTab');
   };
+  
+  
   
 
   // Función para eliminar un ID
