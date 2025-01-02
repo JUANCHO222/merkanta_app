@@ -16,9 +16,10 @@ export default function CardCarrito({id, onRemove }) {
             </View>
             <View style={styles.containerNombre}>
                     <View style={[styles.continerProductName]}>
-                        <Text style={[styles.textProductName]}  ellipsizeMode="tail" numberOfLines={2}>
-                        {id?.toString() || 'ID no disponible'}
-                        </Text>    
+                    <Text style={[styles.textProductName]} ellipsizeMode="tail" numberOfLines={2}>
+                        {id ? id.toString() : 'ID no disponible'}
+                    </Text>
+    
                     </View>
                     <View style={[styles.containerButtons]}>
                         <ListaDesplegable/>

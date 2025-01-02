@@ -91,10 +91,10 @@ export default function ShoppingCart({ navigation }) {
         data={productIds} // Pasamos los IDs directamente
         keyExtractor={(item) => item} // Usamos el ID como clave
         renderItem={({ item }) => (
-          <View style={{paddingHorizontal:20}}>
-            <CardCarrito  id={item?.toString() || 'ID no disponible'}  onRemove={removeId} /> {/* Pasamos el ID y el método removeId */}
+          <View style={{ paddingHorizontal: 20 }}>
+            <CardCarrito id={String(item || 'ID no disponible')} onRemove={removeId} />
           </View>
-        )}
+        )}        
         contentContainerStyle={GlobalStyles.scroll}
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
       />
