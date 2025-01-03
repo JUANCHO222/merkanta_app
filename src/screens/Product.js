@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import Footer from '../components/Footer';
 import PrimaryButton from '../components/PrimaryButton';
 import CarruselProductos from '../components/CarruselProducts';
 import ListaDesplegable from '../components/ListaDesplegable';
@@ -137,11 +136,6 @@ export default function Products({ navigation }) {
       </View>
     );
   }
-
-
-
-
-
 
   // Variante actual: usar la seleccionada o la primera por defecto
   const currentVariant = selectedVariant || product.variants.edges[0]?.node;

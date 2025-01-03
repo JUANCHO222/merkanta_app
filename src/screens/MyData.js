@@ -3,8 +3,6 @@ import { View, Text, StyleSheet, Keyboard } from 'react-native'
 import EntradaTexto from '../components/EntradaTexto'
 import PrimaryButton from '../components/PrimaryButton'
 
-
-
 export default function MyData() {
   const [isEditing, setIsEditing] = useState(false)
   return (

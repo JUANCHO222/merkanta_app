@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'; 
-import { View, Image, TouchableOpacity,StyleSheet, Modal, Text, Alert,TouchableWithoutFeedback, TextInput, ScrollView } from 'react-native';
-import { BtnPrimary, TxtEntrada } from '../../components/index';
+import { View, StyleSheet, Text, TextInput, ScrollView } from 'react-native';
+import { BtnPrimary } from '../../components/index';
 import { auth, onAuthStateChanged,reauthenticateWithCredential, EmailAuthProvider,  updateEmail, sendEmailVerification, doc,  db, updateDoc, getDoc } from '../../firebase/firebase';
 import {useNavigation} from '@react-navigation/native';
-import * as ImagePicker from 'expo-image-picker';
-import { MaterialIcons } from '@expo/vector-icons'; // Importa íconos de Expo
 import { handleChange, handleSubmit} from './PerfilFunctions';
 
 function Perfil({initialData}) {

@@ -3,9 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import EntradaTexto from '../components/EntradaTexto'
 import PrimaryButton from '../components/PrimaryButton'
 
-
 export default function MyDirection() {
-
   const [numeroExterior, setNumeroExterior] = useState('');
   const [numeroInterior, setNumeroInterior] = useState('');
   const [calle, setCalle] = useState('');

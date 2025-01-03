@@ -5,7 +5,6 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
   FlatList,
   ActivityIndicator,
 } from 'react-native';
@@ -97,6 +96,7 @@ export default function Categorie() {
   const products = data?.collectionByHandle?.products?.edges?.map((edge) => edge.node) || [];
 
   return (
+    
     <ApolloProvider client={client}>
       <View style={GlobalStyles.container}>
         <StatusBar barStyle="light-content" />
