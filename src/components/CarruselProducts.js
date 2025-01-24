@@ -1,26 +1,10 @@
 import React from 'react';
 import { FlatList, Text, StyleSheet, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useQuery } from "@apollo/client";
 import { useNavigation } from '@react-navigation/native';
-import { GET_RECOMMENDATIONS } from '../graphql/queryRecomendations';
 
 export default function CarruselProductos({ id, onPress }) {
 
   const navigation = useNavigation();
-  const { data, loading, error } = useQuery(GET_RECOMMENDATIONS, {
-    variables: { id },
-  });
-
-  if (loading) {
-    return <Text>Loading...</Text>;
-  }
-
-  if (error) {
-    return <Text>Error: {error.message}</Text>;
-  }
-
-  // Verifica que los datos estén presentes antes de renderizar el carrusel
-  const recommendations = data?.productRecommendations || [];
 
   return (
     <View style={styles.container}>
@@ -29,19 +13,16 @@ export default function CarruselProductos({ id, onPress }) {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            {/* onPress={() => onPress(item)} */}
-            {/**/}
-            <TouchableOpacity style={styles.card}  onPress={()=> navigation.navigate('Producto',{productId:item.id})} >
+            <TouchableOpacity style={styles.card}  onPress={()=> {}} >
               <View style={styles.imgContainer}>
                 <Image
                   style={styles.image}
-                  source={{ uri: item.images.edges[0]?.node.src }} // Asegúrate de usar la URL de la imagen
+                  source={{ uri: '#' }} // Asegúrate de usar la URL de la imagen
                 />
               </View>
               <View style={[styles.cardContent,styles.transparentBox]}>
-                <Text style={styles.title} ellipsizeMode="tail" numberOfLines={2}>{item.title}</Text>
+                <Text style={styles.title} ellipsizeMode="tail" numberOfLines={2}></Text>
                 <Text style={styles.description}>
-                  ${item.variants.edges[0]?.node.priceV2.amount} {item.variants.edges[0]?.node.priceV2.currencyCode}
                 </Text>
               </View>
             </TouchableOpacity>

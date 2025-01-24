@@ -1,8 +1,6 @@
 import React from "react";
 import { View, FlatList, StyleSheet, ActivityIndicator, Text, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
-
 // Componente para cada producto individual
 const ProductoItem = ({ producto, onPress }) => {
   return (
