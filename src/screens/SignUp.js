@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert, ScrollView, Image } from 'react-native';
-import PrimaryButton from '../components/PrimaryButton';
+import { BtnGlobal } from '../components';
 import UserForm from '../components/UserForm';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -93,7 +93,7 @@ async function CreateUser() {
       />
 
       <View style={styles.buttonContainer}>
-        <PrimaryButton texto="Registrarse" color="#0abf7e" onPress={CreateUser} largo="100%" ancho={50} />
+        <BtnGlobal texto="Registrarse" color="#0abf7e" onPress={CreateUser} largo="100%" ancho={50} />
       </View>
       </ScrollView>
 

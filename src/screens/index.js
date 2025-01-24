@@ -1,7 +1,9 @@
-// src/components/index.js
-export { default as Login } from './Login';
-export { default as SignUp } from './SignUp';
-export { default as MyAccount } from './MyAccount';
-export { default as MyData } from './MyData';
-export { default as MyDirection } from './MyDirection';
+// src/screens/index.js
+export { default as Inicio } from './Home';
+
+export { default as IniciarSesion } from './Login';
+export { default as Registrarse } from './SignUp';
+export { default as MiCuenta } from './MyAccount';
+export { default as MisDatos } from './MyData';
+export { default as MiDireccion } from './MyDirection';
 

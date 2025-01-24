@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, TextInput, View, Text, TouchableWithoutFeedback, StyleSheet } from 'react-native';
-import PrimaryButton from './PrimaryButton';
+import Button from './Button';
 const ResetPasswordModal = ({ modalVisible, closeModal, email, setEmail, handleForgotPassword }) => (
   <Modal
     animationType="fade"
@@ -22,7 +22,7 @@ const ResetPasswordModal = ({ modalVisible, closeModal, email, setEmail, handleF
               placeholder="Email"
               keyboardType="email-address"
             />
-            <PrimaryButton texto="Enviar" onPress={handleForgotPassword} color="#0abf7e" largo="100%" ancho={50} />
+            <Button texto="Enviar" onPress={handleForgotPassword} color="#0abf7e" largo="100%" ancho={50} />
           </View>
         </View>
       </View>

@@ -3,7 +3,7 @@ import { StyleSheet, Image, Text, TouchableOpacity,View } from 'react-native';
 import Icon from '@expo/vector-icons/FontAwesome5';
 import ListaDesplegable from './ListaDesplegable';
 
-export default function CardCarrito({id, onRemove }) {
+export default function CrdCart({id, onRemove }) {
     return (
         <View style={[styles.containerShoppingCartCard]}>
             <View style={styles.containerImg}>

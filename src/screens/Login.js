@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, ActivityIndicator, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import PrimaryButton from '../components/PrimaryButton';
-import EntradaTexto from '../components/EntradaTexto';
-import PasswordInput from '../components/Contrasena';
-import BotonTexto from '../components/BotonTexto';
+import { BtnGlobal, txtEntrada, txtPassword, BtnLink } from '../components';
 import ResetPasswordModal from '../components/ModalRecuperacion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -83,14 +80,14 @@ const LoginScreen = () => {
         />
       </View>
 
-      <EntradaTexto
+      <txtEntrada
         keyboardType="email-address"
         placeholder="Correo Electrónico"
         value={email}
         onChangeText={(text) => setEmail(text)}
         iconName="email"
       />
-      <PasswordInput
+      <txtPassword
         secureTextEntry
         placeholder="Contraseña"
         value={password}
@@ -98,8 +95,8 @@ const LoginScreen = () => {
       />
 
       <View style={styles.textButtonContainer}>
-        <BotonTexto onPress={() => setShowModal(true)} texto="¿Olvidó su contraseña?" />
-        <BotonTexto onPress={() => navigation.navigate('Registro')} texto="Registrarse" />
+        <BtnLink onPress={() => setShowModal(true)} texto="¿Olvidó su contraseña?" />
+        <BtnLink onPress={() => navigation.navigate('Registro')} texto="Registrarse" />
       </View>
 
       <ResetPasswordModal
@@ -114,7 +111,7 @@ const LoginScreen = () => {
         {isLoading ? (
           <ActivityIndicator size="large" color="#00A76F" />
         ) : (
-          <PrimaryButton
+          <BtnGlobal
             texto="Iniciar Sesión"
             color="#0abf7e"
             onPress={login}

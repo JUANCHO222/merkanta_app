@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import PrimaryButton from '../components/PrimaryButton';
+import { BtnGlobal } from '../components';
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -107,14 +108,14 @@ function MyAccount() {
           />
           <Text style={styles.labelStyle}>¡Inicia sesión para poder acceder!</Text>
           <View style={{ marginBottom: 10 }}>
-            <PrimaryButton
+            <BtnGlobal
               color={'#0abf7e'}
               texto={'Iniciar sesión'}
               ancho={45}
               onPress={() => navigation.navigate('InicioTab', { screen: 'Login' })}
             />
           </View>
-          <PrimaryButton
+          <BtnGlobal
             color={'red'}
             texto={'Crear Cuenta'}
             ancho={45}

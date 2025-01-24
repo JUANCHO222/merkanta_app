@@ -3,8 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddressForm from '../components/AddressForm'; 
-import PrimaryButton from '../components/PrimaryButton';
-
+import { BtnGlobal } from '../components';
 export default function MyDirection() {
   const navigation = useNavigation();
   const [user, setUser] = useState(null);
@@ -220,7 +219,7 @@ export default function MyDirection() {
             <Text style={styles.textDescription}>
               {`${dir.calle || ''} ${dir.numeroExterior || ''}, ${dir.coloniaLocalidad || ''}, ${dir.municipioAlcaldia || ''}, ${dir.ciudadPueblo || ''}, ${dir.estado || ''}, ${dir.codigoPostal || ''}, ${dir.pais || ''}`}
             </Text>
-            <PrimaryButton
+            <BtnGlobal
               texto="Editar"
               color="#ff7a00"
               ancho={45}
@@ -252,7 +251,7 @@ export default function MyDirection() {
     ) : (
       <Text style={{ textAlign: 'center', marginVertical: 20 }}>No se encontraron direcciones.</Text>
     )}
-    <PrimaryButton
+    <BtnGlobal
       texto="Agregar Nueva Dirección"
       color="#ff7a00"
       ancho={45}

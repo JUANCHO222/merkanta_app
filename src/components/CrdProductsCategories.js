@@ -48,7 +48,7 @@ const ProductosGrid = ({ productos }) => {
 };
 
 // Componente principal para manejar los datos y mostrar la lista
-const CardProductsCategories = ({ collectionHandle, onPress }) => {
+const CrdProductsCategories = ({ collectionHandle, onPress }) => {
   // Consulta GraphQL para obtener productos por categoría
  
 
@@ -155,4 +155,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CardProductsCategories;
+export default CrdProductsCategories;

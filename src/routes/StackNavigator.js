@@ -1,5 +1,4 @@
 import React from 'react';
-import { TouchableOpacity, Image } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -8,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 // * Importacion de las pantallas
 import BtnSearchBar from '../components/BtnSearchBar';
 
-import { Login, MyAccount, MyData, MyDirection, SignUp } from '../screens';
+import { IniciarSesion, Registrarse,MiCuenta, MisDatos, MiDireccion, Inicio } from '../screens';
 
 
 const Stack = createNativeStackNavigator();
@@ -27,7 +26,7 @@ export const StackNavigation = () => {
     >
       <Stack.Screen 
         name="Inicio"
-        component={Login}
+        component={Inicio}
         options={{
           headerBackVisible: false,
           headerTitle: () => (
@@ -35,31 +34,6 @@ export const StackNavigation = () => {
           ), 
         }}
       />
-
-      <Stack.Screen
-        name="Datos"
-        component={MyData}
-        options={{
-          headerBackTitle: 'Datos',
-        }}      
-      />
-
-      <Stack.Screen
-        name="Cuenta"
-        component={MyAccount}
-        options={{
-          headerBackTitle: 'Datos',
-        }}      
-      />
-      
-      <Stack.Screen
-        name="Direcciones"
-        component={MyDirection}
-        options={{
-          headerBackTitle: 'Direcciones',
-        }}      
-      />
-
     </Stack.Navigator>
   );
 };
@@ -101,13 +75,6 @@ const BottomTabs = () => {
           component={StackNavigation}
           options={{ title: "Inicio", headerShown: false }}
         />
-
-        <Tab.Screen
-          name="Registro"
-          component={SignUp}
-          options={{ title: 'Mi Carrito' }}
-        />
-        
       </Tab.Navigator>
     );
   };

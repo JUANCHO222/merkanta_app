@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
-import EntradaTexto from '../components/EntradaTexto';
-import PrimaryButton from '../components/PrimaryButton';
+import { BtnGlobal, txtEntrada } from '../components';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -102,35 +101,35 @@ export default function MyData() {
       {isEditing ? (
         <>
           <Text>Nombre</Text>
-          <EntradaTexto
+          <txtEntrada
             placeholder={'Nombre'}
             iconName={'person'}
             value={userData.nombre}
             onChangeText={(text) => setUserData({ ...userData, nombre: text })}
           />
           <Text>Apellido</Text>
-          <EntradaTexto
+          <txtEntrada
             placeholder={'Apellido'}
             iconName={'person'}
             value={userData.apellido}
             onChangeText={(text) => setUserData({ ...userData, apellido: text })}
           />
           <Text>Telefono</Text>
-          <EntradaTexto
+          <txtEntrada
             placeholder={'Telefono'}
             iconName={'phone'}
             value={userData.telefono}
             onChangeText={(text) => setUserData({ ...userData, telefono: text })}
           />
           <Text>Email</Text>
-          <EntradaTexto
+          <txtEntrada
             placeholder={'Email'}
             iconName={'mail'}
             disabled={true}
             value={userData.email}
           />
           <View style={{ marginBottom: 15 }}>
-            <PrimaryButton
+            <BtnGlobal
               texto={'Guardar'}
               color={'#0abf7e'}
               ancho={45}
@@ -139,7 +138,7 @@ export default function MyData() {
             />
           </View>
 
-          <PrimaryButton
+          <BtnGlobal
             texto={'Cancelar'}
             color={'red'}
             ancho={45}
@@ -155,7 +154,7 @@ export default function MyData() {
             <Text style={styles.textDescription}>Apellidos: {userData.apellido}</Text>
             <Text style={styles.textDescription}>Email: {userData.email}</Text>
             <Text style={styles.textDescription}>Numero de telefono: {userData.telefono}</Text>
-            <PrimaryButton
+            <BtnGlobal
               texto={'Editar'}
               color={'#0abf7e'}
               ancho={45}

@@ -27,13 +27,6 @@ export default function Footer() {
         </Text>
         <Text style={styles.text}>Términos y condiciones</Text>
       </View>
-      <View style={styles.containerAdvertisement}>
-        <Text style={{ fontSize:12 }}>Procesamos el pago y el envío con</Text>
-        <Image
-          source={require('../../assets/images/Cliente-Logo-Mercado-Libre.png')}
-          style={styles.imagenMercado}
-        />
-      </View>
     </View>
   );
 }

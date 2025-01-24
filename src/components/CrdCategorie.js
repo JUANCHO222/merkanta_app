@@ -12,7 +12,7 @@ const categories = [
 
 const numColumns = 2; // Number of columns in the grid
 
-export default function CardCategories() {
+export default function CrdCategorie() {
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.categoryCard}>
             <Image 

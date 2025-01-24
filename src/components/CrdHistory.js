@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
-export default function CardHistorial() {
+export default function CrdHistory() {
     const handlePress = () => {
         console.log("Button pressed!");
         // Aquí puedes añadir cualquier otra acción

@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Image, Text, View, TouchableOpacity } from "react-native";
 
-export default function CardProducto({ title, description, imageUrl, precio, onPress }) {
+export default function CrdProduct({ title, description, imageUrl, precio, onPress }) {
     // Valores predeterminados para las props
     const defaultTitle = title || 'Sin título';
     const defaultPrecio = precio ? `${precio} MXM` : 'Precio no disponible';

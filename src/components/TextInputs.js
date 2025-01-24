@@ -2,7 +2,7 @@ import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // Asegúrate de instalar esta librería
 
-const EntradaTexto = ({ 
+const TextInputs = ({ 
   keyboardType, 
   maxLength, 
   placeholder, 
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EntradaTexto;
+export default TextInputs;

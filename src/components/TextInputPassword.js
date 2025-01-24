@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-const PasswordInput = ({ placeholder, value, onChangeText }) => {
+const TextInputPassword = ({ placeholder, value, onChangeText }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PasswordInput;
+export default TextInputPassword;
 
 
 
