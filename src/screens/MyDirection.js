@@ -1,169 +1,312 @@
-import React,{useState} from 'react'
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import EntradaTexto from '../components/EntradaTexto'
-import PrimaryButton from '../components/PrimaryButton'
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AddressForm from '../components/AddressForm'; 
+import PrimaryButton from '../components/PrimaryButton';
 
 export default function MyDirection() {
-  const [numeroExterior, setNumeroExterior] = useState('');
-  const [numeroInterior, setNumeroInterior] = useState('');
-  const [calle, setCalle] = useState('');
-  const [colonia, setColonia] = useState('');
-  const [municipio, setMunicipio] = useState('');
-  const [codigoPostal, setCodigoPostal] = useState('');
-  const [ciudad, setCiudad] = useState('');
-  const [estado, setEstado] = useState('');
-  const [pais, setPais] = useState('');
-  const [referencia, setReferencia] = useState('');
-
+  const navigation = useNavigation();
+  const [user, setUser] = useState(null);
+  const [direcciones, setDirecciones] = useState([]); 
   const [isEditing, setIsEditing] = useState(false);
+  const [isAdding, setIsAdding] = useState(false); 
+  const [direccion, setDireccion] = useState({
+    calle: '',
+    numeroExterior: '',
+    numeroInterior: '',
+    colonia: '',
+    municipio: '',
+    codigoPostal: '',
+    ciudad: '',
+    estado: '',
+    pais: '',
+    referencia: '',
+    latitud: '',
+    longitud: ''
+  });
+
+  const getUserData = async () => {
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+            
+      console.log('Datos recuperados de AsyncStorage:', { userId  });
+
+      if (userId) {
+        setUser({ id: userId });
+      } else {
+        setUser(null);
+      }
+    } catch (error) {
+      console.error('Error al obtener los datos:', error.message);
+      setUser(null);
+    }
+  };
+
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getUserData(); // Cargar datos cada vez que la pantalla esté activa
+    }, [])
+  );
+
+  const fetchAddresses = async () => {
+    if (!user || !user.id) return;
+  
+    try {
+      const response = await fetch(
+        `https://sought-dassie-partly.ngrok-free.app/api/Direccion/direcciones/${user.id}`
+      );
+  
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        console.error('Error de la API:', errorData);
+        throw new Error(errorData?.Message || 'Error al obtener los datos del usuario');
+      }
+  
+      const data = await response.json();
+      console.log("Direcciones obtenidas:", data);
+  
+      if (Array.isArray(data) && data.length > 0) {
+        setDirecciones(data);
+      }
+    } catch (error) {
+      console.error('Error al obtener las direcciones:', error);
+      Alert.alert('Error', 'No se pudieron cargar las direcciones.');
+    }
+  };
+  
+  useEffect(() => {
+    fetchAddresses();
+  }, [user]);
+  
+  const handleInputChange = (campo, valor) => {
+    setDireccion((prevDireccion) => ({
+      ...prevDireccion,
+      [campo]: valor
+    }));
+  };
+
+
+  const handleSave = async () => {
+    const payload = {
+      calle: direccion.calle,
+      numeroExterior: direccion.numeroExterior,
+      numeroInterior:direccion.numeroInterior, 
+      coloniaLocalidad: direccion.colonia,
+      municipioAlcaldia: direccion.municipio,
+      codigoPostal: parseInt(direccion.codigoPostal, 10) || 0,
+      ciudadPueblo: direccion.ciudad,
+      estado: direccion.estado,
+      pais: direccion.pais,
+      referencia: direccion.referencia,
+      latitud: parseFloat(direccion.latitud) || 0,
+      longitud: parseFloat(direccion.longitud) || 0,
+      status: true,
+      idUsuario: user.id,
+    };
+  
+    console.log("JSON que se enviará al backend:", JSON.stringify(payload, null, 2));
+  
+    try {
+      const response = await fetch("https://sought-dassie-partly.ngrok-free.app/api/Direccion/crear-direccion", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json();
+      console.log("Respuesta del backend:", data);
+    } catch (error) {
+      console.error("Error al enviar datos:", error);
+    }
+  };
+  
+  const handleEditSave = async () => {
+    if (!direccion.idDireccionUsuario || !user.id) {
+      Alert.alert('Error', 'Faltan datos para editar la dirección.');
+      return;
+    }
+  
+    const payload = {
+      calle: direccion.calle,
+      numeroExterior: direccion.numeroExterior,
+      numeroInterior: direccion.numeroInterior,
+      coloniaLocalidad: direccion.colonia,
+      municipioAlcaldia: direccion.municipio,
+      codigoPostal: parseInt(direccion.codigoPostal, 10) || 0,
+      ciudadPueblo: direccion.ciudad,
+      estado: direccion.estado,
+      pais: direccion.pais,
+      referencia: direccion.referencia,
+      latitud: parseFloat(direccion.latitud) || 0,
+      longitud: parseFloat(direccion.longitud) || 0,
+      status: true,
+    };
+  
+    try {
+      const response = await fetch(
+        `https://sought-dassie-partly.ngrok-free.app/api/Direccion/editar-direccion/${user.id}/${direccion.idDireccionUsuario}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+  
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        console.error('Error al editar la dirección:', errorData);
+        throw new Error(errorData?.Message || 'Error al editar la dirección');
+      }
+  
+      const data = await response.json();
+      console.log('Dirección actualizada exitosamente:', data);
+  
+      Alert.alert('Éxito', 'La dirección fue actualizada correctamente.');
+      setIsEditing(false);
+  
+      // Llamar a fetchAddresses para actualizar la lista de direcciones
+      fetchAddresses();
+    } catch (error) {
+      console.error('Error al guardar los cambios:', error);
+      Alert.alert('Error', 'No se pudo actualizar la dirección.');
+    }
+  };
+  
+  
+
+  const handleCancel = () => {
+    setIsEditing(false); // Salir del modo de edición
+    setIsAdding(false);  // Salir del modo de agregar nueva dirección
+    setDireccion({
+      calle: '',
+      numeroExterior: '',
+      numeroInterior: '',
+      colonia: '',
+      municipio: '',
+      codigoPostal: '',
+      ciudad: '',
+      estado: '',
+      pais: '',
+      referencia: '',
+      latitud: '',
+      longitud: ''
+    });
+  };
+  
+  
+
   return (
-    <View style={[styles.container]}>
-      <ScrollView contentContainerStyle={{padding:20}}>
-        {isEditing ? (
-          <>
-         <Text style={styles.label}>Calle</Text>
-          <EntradaTexto
-            placeholder={'Calle'}
-            value={calle}
-            onChangeText={setCalle}
-          />
-
-          <View style={styles.numberFieldsContainer}>
-            <Text style={styles.label}>Número Exterior</Text>
-            <EntradaTexto
-              placeholder={'Número Exterior'}
-              value={numeroExterior}
-              onChangeText={setNumeroExterior}
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
+      {isAdding || isEditing ? (
+  <AddressForm
+    direccion={direccion}
+    onInputChange={handleInputChange}
+    onSave={isEditing ? handleEditSave : handleSave}
+    onCancel={handleCancel}
+  />
+) : (
+  <>
+    {direcciones.length > 0 ? (
+      direcciones.map((dir, index) => {
+        return (
+          <View key={index} style={styles.cardData}>
+            <Text style={styles.labelTitle}>Dirección {index + 1}</Text>
+            <Text style={styles.textDescription}>
+              {`${dir.calle || ''} ${dir.numeroExterior || ''}, ${dir.coloniaLocalidad || ''}, ${dir.municipioAlcaldia || ''}, ${dir.ciudadPueblo || ''}, ${dir.estado || ''}, ${dir.codigoPostal || ''}, ${dir.pais || ''}`}
+            </Text>
+            <PrimaryButton
+              texto="Editar"
+              color="#ff7a00"
+              ancho={45}
+              largo="100%"
+              bordered={false}
+              onPress={() => {
+                setIsEditing(true);
+                setDireccion({
+                  idDireccionUsuario: dir.idDireccionUsuario, // Necesario para la edición
+                  calle: dir.calle || '',
+                  numeroExterior: dir.numeroExterior || '',
+                  numeroInterior: dir.numeroInterior || '',
+                  colonia: dir.coloniaLocalidad || '', // Mapeo correcto
+                  municipio: dir.municipioAlcaldia || '', // Mapeo correcto
+                  codigoPostal: dir.codigoPostal?.toString() || '', // Convertir a cadena
+                  ciudad: dir.ciudadPueblo || '', // Mapeo correcto
+                  estado: dir.estado || '',
+                  pais: dir.pais || '',
+                  referencia: dir.referencia || '',
+                  latitud: dir.latitud?.toString() || '',
+                  longitud: dir.longitud?.toString() || '',
+                });
+              }}
+              
             />
           </View>
-
-          <View style={styles.numberFieldsContainer}>
-            <Text style={styles.label}>Número Interior</Text>
-            <EntradaTexto
-              placeholder={'Número Interior'}
-              value={numeroInterior}
-              onChangeText={setNumeroInterior}
-            />
-          </View>
-
-          <Text style={styles.label}>Colonia o Localidad</Text>
-          <EntradaTexto
-            placeholder={'Colonia o Localidad'}
-            value={colonia}
-            onChangeText={setColonia}
-          />
-
-          <Text style={styles.label}>Municipio o Alcaldía</Text>
-          <EntradaTexto
-            placeholder={'Municipio o Alcaldía'}
-            value={municipio}
-            onChangeText={setMunicipio}
-          />
-
-          <Text style={styles.label}>Código Postal</Text>
-          <EntradaTexto
-            placeholder={'Código Postal'}
-            value={codigoPostal}
-            onChangeText={setCodigoPostal}
-          />
-
-          <Text style={styles.label}>Ciudad o Pueblo</Text>
-          <EntradaTexto
-            placeholder={'Ciudad o Pueblo'}
-            value={ciudad}
-            onChangeText={setCiudad}
-          />
-
-          <Text style={styles.label}>Estado</Text>
-          <EntradaTexto
-            placeholder={'Estado'}
-            value={estado}
-            onChangeText={setEstado}
-          />
-
-          <Text style={styles.label}>País</Text>
-          <EntradaTexto
-            placeholder={'País'}
-            value={pais}
-            onChangeText={setPais}
-          />
-
-          <Text style={styles.label}>Referencia</Text>
-          <EntradaTexto
-            placeholder={'Referencia'}
-            value={referencia}
-            onChangeText={setReferencia}
-          />
-
-        <View style={{marginBottom:15}}>
-          <PrimaryButton 
-            texto={'Guardar'}
-            color={'#0abf7e'}
-            ancho={45}
-            bordered={false}
-            onPress={() => {}}
-          />
-        </View>
-        
-        <PrimaryButton 
-          texto={'Cancelar'}
-          color={'red'}
-          ancho={45}
-          bordered={false}
-          onPress={() => setIsEditing(false)}
-        />
-          </>
-        ):
-        (
-          <>
-            <View style={[styles.cardData]}>
-              <Text style={[styles.labelTitle]}>Dirección</Text>
-              <Text style={[styles.textDescription]}>Calle 123, Colonia ABC, Ciudad XYZ, Estado de México, 55555</Text>
-              <PrimaryButton 
-                texto={'Editar'}
-                color={'#0abf7e'}
-                ancho={45}
-                largo={'100%'}
-                bordered={false}
-                onPress={() => setIsEditing(true)}
-              />
-            </View>
-            <PrimaryButton 
-                texto={'Agregar +'}
-                color={'#0abf7e'}
-                ancho={45}
-                largo={'100%'}
-                bordered={false}
-                onPress={() => {}}
-              />
-          </>
-        )}
-     
+        );
+      })
+    ) : (
+      <Text style={{ textAlign: 'center', marginVertical: 20 }}>No se encontraron direcciones.</Text>
+    )}
+    <PrimaryButton
+      texto="Agregar Nueva Dirección"
+      color="#ff7a00"
+      ancho={45}
+      largo="100%"
+      bordered={false}
+      onPress={() => {
+        setIsAdding(true);
+        setDireccion({
+          numeroExterior: '',
+          numeroInterior: '',
+          calle: '',
+          colonia: '',
+          municipio: '',
+          codigoPostal: '',
+          ciudad: '',
+          estado: '',
+          pais: 'México',
+          referencia: '',
+          latitud: '',
+          longitud: '',
+        });
+      }}
+    />
+  </>
+)}
       </ScrollView>
-
-        
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        backgroundColor: '#d9d9d9',
-    },
-    cardData: {
-      padding:10,
-      flexDirection: 'column',
-      backgroundColor: 'white',
-      borderRadius: 8,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.2,
-      shadowRadius: 4,
-      elevation: 3,
-      marginBottom: 10,
-      alignItems: 'flex-start',
-      justifyContent:'flex-start',
-      overflow: 'hidden', // Asegura que el gradiente no se salga del botón
-    },
-})
+  container: {
+    flex: 1,
+    backgroundColor: '#d9d9d9',
+  },
+  cardData: {
+    padding: 10,
+    flexDirection: 'column',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    marginBottom: 15,
+    elevation: 3,
+  },
+  labelTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  textDescription: {
+    fontSize: 14,
+    color: '#555',
+    marginBottom: 10,
+  },
+});

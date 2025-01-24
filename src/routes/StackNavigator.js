@@ -7,21 +7,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 // * Importacion de las pantallas
 import BtnSearchBar from '../components/BtnSearchBar';
-import SearchBar from '../components/SearchBar';
-import ProductSearch from '../components/ProductSearch';
-import Categorie from '../screens/Categorie';
-import Products from '../screens/Product';
-import Home from '../screens/Home';
-import ShoppingCart from '../screens/ShoppingCart';
-import Prueba from '../screens/Prueba';
-import MyAccount from '../screens/MyAccount';
-import LoginScreen from '../screens/Login';
-import SignUp from '../screens/SignUp';
-import MyData from '../screens/MyData';
-import MyDirection from '../screens/MyDirection';
-import PurchaseHistory from '../screens/PurchaseHistory';
-import PrincipalForm from '../screens/PrincipalForm';
-import UpProduct from '../screens/UpProduct';
+
+import { Login, MyAccount, MyData, MyDirection, SignUp } from '../screens';
 
 
 const Stack = createNativeStackNavigator();
@@ -40,7 +27,7 @@ export const StackNavigation = () => {
     >
       <Stack.Screen 
         name="Inicio"
-        component={Home}
+        component={Login}
         options={{
           headerBackVisible: false,
           headerTitle: () => (
@@ -48,76 +35,31 @@ export const StackNavigation = () => {
           ), 
         }}
       />
+
       <Stack.Screen
-        name="Categoria"
-        component={Categorie}
-        options={{
-          headerShown: false,
-          // Ocultar las tabs para esta pantalla
-          tabBarStyle: { display: 'none' },
-        }}
-      />
-      <Stack.Screen
-        name="Producto"
-        component={Products}
-        options={{
-          headerBackVisible: false,
-          headerTitle: () => (
-            <BtnSearchBar onPress={() => navigation.navigate('BusquedaTab')} />
-          ),
-          // Ocultar las tabs para esta pantalla
-          tabBarStyle: { display: 'none' },
-        }}
-      />
-      <Stack.Screen
-        name="Carrito de compras"
-        component={ShoppingCart}
-        options={{
-          // Ocultar las tabs para esta pantalla
-          tabBarStyle: { display: 'none' },
-        }}
-      />
-      
-      <Stack.Screen 
-        name="Login"
-        component={LoginScreen}
-        options={{
-          headerShown: true,
-          tabBarStyle: { display: 'none' },
-        }} 
-      />
-      <Stack.Screen 
-        name="Signup"
-        component={SignUp}
-        options={{
-          headerShown: true,
-          tabBarStyle: { display: 'none' },
-        }} 
-      />
-      <Stack.Screen 
-        name="Informacion Personal"
+        name="Datos"
         component={MyData}
         options={{
-          headerShown: true,
-          tabBarStyle: { display: 'none' },
-        }} 
+          headerBackTitle: 'Datos',
+        }}      
       />
-      <Stack.Screen 
-        name="Mis Direcciones"
+
+      <Stack.Screen
+        name="Cuenta"
+        component={MyAccount}
+        options={{
+          headerBackTitle: 'Datos',
+        }}      
+      />
+      
+      <Stack.Screen
+        name="Direcciones"
         component={MyDirection}
         options={{
-          headerShown: true,
-          tabBarStyle: { display: 'none' },
-        }} 
+          headerBackTitle: 'Direcciones',
+        }}      
       />
-      <Stack.Screen 
-        name="Mis Compras"
-        component={PurchaseHistory}
-        options={{
-          headerShown: true,
-          tabBarStyle: { display: 'none' },
-        }} 
-      />
+
     </Stack.Navigator>
   );
 };
@@ -161,51 +103,11 @@ const BottomTabs = () => {
         />
 
         <Tab.Screen
-          name="BusquedaTab"
-          options={{
-            headerTitle: () => (
-              <SearchBar
-                value={searchText}
-                onChangeText={setSearchText}
-                onClear={() => setSearchText('')}
-              />
-            ),
-          }}
-        >
-        {() => <ProductSearch searchText={searchText}/>}
-</Tab.Screen>
-
-        <Tab.Screen
-          name="CarritoTab"
-          component={ShoppingCart}
+          name="Registro"
+          component={SignUp}
           options={{ title: 'Mi Carrito' }}
         />
-        <Tab.Screen
-          name="Mi Cuenta"
-          component={MyAccount}
-          options={{ headerShown: false }}
-        />
-        <Tab.Screen 
-        name="Prueba"
-        component={Prueba}
-        options={{
-          tabBarStyle: { display: 'flex' },
-        }}
-        />
-        <Tab.Screen 
-        name="Formulario"
-        component={PrincipalForm}
-        options={{
-          tabBarStyle: { display: 'flex' },
-        }}
-      />
-        <Tab.Screen 
-        name="Generar Produto"
-        component={UpProduct}
-        options={{
-          tabBarStyle: { display: 'flex' },
-        }}
-      />
+        
       </Tab.Navigator>
     );
   };

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import PrimaryButton from '../components/PrimaryButton';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function MyAccount() {
@@ -13,13 +13,12 @@ function MyAccount() {
 
   const getUserData = async () => {
     try {
-      const email = await AsyncStorage.getItem('userEmail');
       const userId = await AsyncStorage.getItem('userId');
-      
-      console.log('Datos recuperados de AsyncStorage:', { email, userId });
+            
+      console.log('Datos recuperados de AsyncStorage:', { userId  });
 
-      if (email && userId) {
-        setUser({ email, id: userId });
+      if (userId) {
+        setUser({ id: userId });
       } else {
         setUser(null);
       }
@@ -35,7 +34,7 @@ function MyAccount() {
       await AsyncStorage.clear(); // Limpia todos los datos de AsyncStorage
       setUser(null); // Resetea el estado del usuario
       Alert.alert('Sesión cerrada', 'Has cerrado sesión correctamente.');
-      navigation.navigate('InicioTab', { screen: 'Login' }); // Redirige al login
+      navigation.navigate('InicioTab', { screen: 'Home' }); // Redirige al login
     } catch (error) {
       console.error('Error al cerrar sesión:', error.message);
     }
@@ -54,7 +53,7 @@ function MyAccount() {
           <Text style={styles.labelStyle}>¡Bienvenido, {user.id}!</Text>
           <TouchableOpacity
             style={[styles.cardData]}
-            onPress={() => navigation.navigate('InicioTab', { screen: 'Informacion Personal' })}
+            onPress={() => navigation.navigate('InicioTab', { screen: 'Datos' })}
           >
             <LinearGradient
               colors={['#2fd896', '#a4f6ce']}
@@ -68,7 +67,7 @@ function MyAccount() {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.cardData]}
-            onPress={() => navigation.navigate('InicioTab', { screen: 'Mis Direcciones' })}
+            onPress={() => navigation.navigate('InicioTab', { screen: 'Direcciones' })}
           >
             <LinearGradient
               colors={['#2fd896', '#a4f6ce']}

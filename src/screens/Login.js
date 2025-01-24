@@ -31,48 +31,38 @@ const LoginScreen = () => {
       Alert.alert('Error', 'Por favor, complete todos los campos.');
       return;
     }
-
+  
     setIsLoading(true); // Activar indicador de carga
     try {
       const response = await fetch(
-        'https://4f6b-2806-2f0-9180-ce1f-39d2-f26-b7b9-fe56.ngrok-free.app/api/Usuario/Login',
+        'https://sought-dassie-partly.ngrok-free.app/api/Usuario/iniciar-sesion', // Ajusta la URL de tu servidor
         {
           method: 'POST',
           headers: {
-            accept: '*/*',
-            'Content-Type': 'application/json', // Tipo de contenido de la solicitud
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email, password }), // Enviar datos al backend
         }
       );
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          Alert.alert('Error', 'Correo o contraseña incorrectos.');
-        } else {
-          Alert.alert('Error', `Ocurrió un error: ${response.status}`);
-        }
-        return;
-      }
-
-      const data = await response.json();
-      console.log(data)
-
-
-      if (data && data.message === 'Inicio de sesión exitoso.') {
-        // Verificar si data.user.id existe
-        const userId = data.user?.idUsuario?.toString();
-
-        if (userId) {
-          await AsyncStorage.setItem('userId', userId);
-          await AsyncStorage.setItem('userEmail', data.user.email);
+  
+      const data = await response.json(); // Parsear respuesta a JSON
+      console.log(data);
+  
+      if (data && data.mensaje === 'Inicio de sesión exitoso.') {
+        const usuario = data.usuario;
+        console.log("datos usuario",usuario);
+        if (usuario && usuario.idUsuario) {
+          // Convertir IdUsuario a string y guardarlo en AsyncStorage
+          await AsyncStorage.setItem('userId', usuario.idUsuario.toString());
+      
           console.log('Datos almacenados correctamente.');
-          navigation.navigate('Mi Cuenta');
+          navigation.navigate('Cuenta');
         } else {
-          Alert.alert('Error', 'No se pudo recuperar el ID de usuario.');
+          Alert.alert('Error', 'No se pudo recuperar los datos del usuario.');
         }
       } else {
-        Alert.alert('Error', 'Credenciales incorrectas.');
+        Alert.alert('Error', data.mensaje || 'Credenciales incorrectas.');
       }
       
     } catch (error) {
@@ -82,6 +72,7 @@ const LoginScreen = () => {
       setIsLoading(false); // Desactivar indicador de carga
     }
   };
+  
 
   return (
     <View style={styles.container}>
@@ -108,7 +99,7 @@ const LoginScreen = () => {
 
       <View style={styles.textButtonContainer}>
         <BotonTexto onPress={() => setShowModal(true)} texto="¿Olvidó su contraseña?" />
-        <BotonTexto onPress={() => navigation.navigate('Signup')} texto="Registrarse" />
+        <BotonTexto onPress={() => navigation.navigate('Registro')} texto="Registrarse" />
       </View>
 
       <ResetPasswordModal

@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native'
-import { StatusBar } from 'expo-status-bar';
+import { StyleSheet} from 'react-native'
 import { AppNavigator } from './src/routes/StackNavigator';
-import { ApolloProvider } from '@apollo/client';
-import client from './src/apollo/client'; // Asegúrate de importar tu cliente Apollo
 import { useFonts } from 'expo-font';
 const App = () => {
    const [fontsLoaded] = useFonts({
@@ -18,9 +15,7 @@ const App = () => {
     
   return (
 
-    <ApolloProvider client={client}>
       <AppNavigator/>
-    </ApolloProvider>
   );
 };
 

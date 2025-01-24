@@ -1,7 +1,5 @@
 import React from "react";
 import { View, FlatList, StyleSheet, ActivityIndicator, Text, TouchableOpacity, Image } from "react-native";
-import { useQuery } from "@apollo/client";
-import { GET_PRODUCTS_BY_CATEGORY } from "../graphql/queryProductoCategoria"; // Asegúrate de que la consulta está correctamente definida
 import { useNavigation } from "@react-navigation/native";
 
 
@@ -52,9 +50,7 @@ const ProductosGrid = ({ productos }) => {
 // Componente principal para manejar los datos y mostrar la lista
 const CardProductsCategories = ({ collectionHandle, onPress }) => {
   // Consulta GraphQL para obtener productos por categoría
-  const { data, loading, error } = useQuery(GET_PRODUCTS_BY_CATEGORY, {
-    variables: { first: 4, collectionHandle },
-  });
+ 
 
   if (loading) {
     return <ActivityIndicator size="large" color="#00A76F" />;
