@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
-export default function ListaDesplegable({ stock }) {
+export default function ListaDesplegable({ stock, borderRadius = 12 }) {
   const [selectedValue, setSelectedValue] = useState(null);
 
   // Genera dinámicamente las opciones según el stock
@@ -10,7 +10,7 @@ export default function ListaDesplegable({ stock }) {
   console.log('Variant seleccionada:', stock);
 
   return (
-    <>
+    <View style={[styles.pickerContainer, { borderRadius }]}>
       <Picker
         selectedValue={selectedValue}
         style={[styles.pickerStyle]}
@@ -25,16 +25,18 @@ export default function ListaDesplegable({ stock }) {
           />
         ))}
       </Picker>
-    </>
+    </View>
   );
-  
 }
 
 const styles = StyleSheet.create({
-  pickerStyle: {
-    flex: 1,
-    height: 45,
+  pickerContainer: {
     borderWidth: 1,
+    borderColor: '#ccc',
+    overflow: 'hidden', // Necesario para que el borderRadius se aplique correctamente
+  },
+  pickerStyle: {
+    height: 45,
     backgroundColor: '#fff',
   },
 });

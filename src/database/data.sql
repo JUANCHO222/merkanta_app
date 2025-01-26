@@ -66,6 +66,7 @@ CREATE TABLE far_producto_imagen (
     id_producto INT NOT NULL,
     url_imagen VARCHAR(255) NOT NULL,
     fecha_creacion DATETIME NOT NULL DEFAULT GETDATE(),
+    orden INT NOT NULL,
     FOREIGN KEY (id_producto) REFERENCES far_producto(id_producto)
 );
 
@@ -116,13 +117,3 @@ CREATE TABLE far_detalle_direccion (
     CONSTRAINT UC_DireccionPredeterminada UNIQUE (id_usuario, es_predeterminada) -- Único por usuario
 );
 
--- Tabla far_Detalle Imagen
-CREATE TABLE far_detalle_imagen (
-    id_detalle_imagen INT IDENTITY PRIMARY KEY,  
-    id_producto_imagen INT NOT NULL, -- Relación con la imagen del producto
-    orden INT NOT NULL DEFAULT 1, -- Orden de aparición
-    texto_alternativo VARCHAR(255) NULL, -- Texto para accesibilidad/SEO
-    es_imagen_principal BIT NOT NULL DEFAULT 0, -- Indicador de imagen principal
-    fecha_creacion DATETIME NOT NULL DEFAULT GETDATE(),
-    FOREIGN KEY (id_producto_imagen) REFERENCES far_producto_imagen(id_producto_imagen)
-);

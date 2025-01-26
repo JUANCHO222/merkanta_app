@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 // * Importacion de las pantallas
 import BtnSearchBar from '../components/BtnSearchBar';
 
-import { IniciarSesion, Registrarse,MiCuenta, MisDatos, MiDireccion, Inicio } from '../screens';
+import { IniciarSesion, Registrarse,MiCuenta, MisDatos, MiDireccion, Inicio, Producto, CarritoCompras } from '../screens';
 
 
 const Stack = createNativeStackNavigator();
@@ -27,6 +27,27 @@ export const StackNavigation = () => {
       <Stack.Screen 
         name="Inicio"
         component={Inicio}
+        options={{
+          headerBackVisible: false,
+          headerTitle: () => (
+            <BtnSearchBar onPress={() => navigation.navigate('BusquedaTab')} />
+          ), 
+        }}
+      />
+      <Stack.Screen 
+        name="Producto"
+        component={Producto}
+        options={{
+          headerBackVisible: false,
+          headerTitle: () => (
+            <BtnSearchBar onPress={() => navigation.navigate('BusquedaTab')} />
+          ), 
+        }}
+      />
+
+      <Stack.Screen 
+        name="CarritoCompras"
+        component={CarritoCompras}
         options={{
           headerBackVisible: false,
           headerTitle: () => (

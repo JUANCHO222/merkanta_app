@@ -1,27 +1,59 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 
-const categories = [
-    { id: '1', name: 'Categoría 1', image: require('../../assets/adaptive-icon.png') },
-    { id: '2', name: 'Categoría 2', image: require('../../assets/adaptive-icon.png') }, // No image provided
-    { id: '3', name: 'Categoría 3', image: require('../../assets/adaptive-icon.png') },
-    { id: '4', name: 'Categoría 4', image: require('../../assets/adaptive-icon.png') },
-    { id: '5', name: 'Categoría 5', image: require('../../assets/adaptive-icon.png') }, // No image provided
-    { id: '6', name: 'Categoría 6', image: require('../../assets/adaptive-icon.png') },
-];
-
-const numColumns = 2; // Number of columns in the grid
+const numColumns = 2;
 
 export default function CrdCategorie() {
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const fetchCategories = async () => {
+        try {
+            const response = await fetch('https://sought-dassie-partly.ngrok-free.app/api/Categoria/listar'); // Cambia esta URL por la correcta
+            const result = await response.json();
+            console.log(result); // Verifica la estructura de los datos en la consola
+            if (response.ok) {
+                setCategories(result.categorias || []);
+            } else {
+                setError(result.message || 'Error al obtener las categorías');
+            }
+        } catch (err) {
+            setError('No se pudo conectar con el servidor.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.categoryCard}>
             <Image 
-                source={item.image ? item.image : require('../../assets/adaptive-icon.png')}
+                source={{ uri: item.imagenUrl }} 
                 style={styles.categoryImage} 
+                resizeMode="cover" // Asegúrate de que la imagen cubra todo el espacio
             />
-            <Text style={styles.categoryText}>{item.name}</Text>
+            {/* Texto superpuesto sobre la imagen */}
+            <View style={styles.overlay}>
+                <Text style={styles.categoryText}>{item.nombre}</Text>
+            </View>
         </TouchableOpacity>
     );
+
+    if (loading) {
+        return <ActivityIndicator size="large" color="#2fd896" style={{ marginTop: 20 }} />;
+    }
+
+    if (error) {
+        return (
+            <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>{error}</Text>
+            </View>
+        );
+    }
 
     return (
         <View style={styles.card}>
@@ -30,7 +62,7 @@ export default function CrdCategorie() {
                 <FlatList
                     data={categories}
                     renderItem={renderItem}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item.idCategoria.toString()}
                     numColumns={numColumns}
                     columnWrapperStyle={styles.row}
                 />
@@ -44,7 +76,7 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 12,
         overflow: 'hidden',
-        marginBottom:20
+        marginBottom: 20,
     },
     title: {
         backgroundColor: "#2fd896",
@@ -64,23 +96,39 @@ const styles = StyleSheet.create({
     categoryCard: {
         flex: 1,
         margin: 5,
-        backgroundColor: '#f0f0f0',
-        padding: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
+        height: 150, // Altura fija para las tarjetas
         borderRadius: 8,
+        overflow: 'hidden', // Asegúrate de que la imagen no se salga del contenedor
     },
     categoryImage: {
-        width: 80,
-        height: 80,
-        borderRadius: 8,
-        marginBottom: 5,
+        width: '100%',
+        height: '100%', // Ocupa todo el espacio del contenedor
+    },
+    overlay: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semi-transparente
+        padding: 5,
+        alignItems: 'center',
     },
     categoryText: {
         fontSize: 14,
         fontWeight: 'bold',
+        color: 'white',
+        textAlign: 'center',
     },
     row: {
         justifyContent: 'space-between',
+    },
+    errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });

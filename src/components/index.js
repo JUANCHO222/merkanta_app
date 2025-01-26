@@ -11,3 +11,5 @@ export { default as ProductoDestacado } from './CrdFeaturedProduct';
 export { default as Historia } from './CrdHistory';
 export { default as Producto } from './CrdProduct';
 export { default as ProductoPorCategoria } from './CrdProductsCategories';
+
+export { default as Carrusel } from './Carousel';

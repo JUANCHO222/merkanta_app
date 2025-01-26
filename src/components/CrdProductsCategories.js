@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, FlatList, StyleSheet, ActivityIndicator, Text, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+
 // Componente para cada producto individual
 const ProductoItem = ({ producto, onPress }) => {
   return (
@@ -9,76 +10,100 @@ const ProductoItem = ({ producto, onPress }) => {
         <Image
           style={styles.image}
           source={{
-            uri: producto.imagen || "https://via.placeholder.com/160",
+            uri: producto.imagenUrl || "https://via.placeholder.com/160",
           }}
         />
       </View>
       <View style={styles.cardContent}>
         <Text style={styles.description} ellipsizeMode="tail" numberOfLines={2}>
-          {producto.nombre}
+          {producto.nombre || "Producto sin nombre"}
         </Text>
-        <Text style={styles.newPrice}>${producto.precio}</Text>
+        <Text style={styles.newPrice}>
+          {producto.precio !== undefined && producto.precio !== null
+            ? `$${producto.precio.toFixed(2)}`
+            : "Precio no disponible"}
+        </Text>
       </View>
     </TouchableOpacity>
   );
 };
 
-// Componente para mostrar los productos en un diseño de rejilla
+// Componente para mostrar los productos en una cuadrícula
 const ProductosGrid = ({ productos }) => {
-    const navigation = useNavigation();
-  
+  const navigation = useNavigation();
+
   return (
     <FlatList
       data={productos}
       renderItem={({ item }) => (
         <ProductoItem
           producto={item}
-          // onPress={() => console.log("Producto seleccionado:", item.nombre)}
-          onPress={() => navigation.navigate('Producto',{productId: item.id})}
+          onPress={() => navigation.navigate('Producto', { idProducto: item.idProducto })} // Cambiar producto.idProducto por item.idProducto
         />
       )}
-      keyExtractor={(item) => item.id}
-      numColumns={2} // Número de columnas
-      columnWrapperStyle={styles.row} // Estilo para filas
+      keyExtractor={(item, index) => (item?.idProducto ? item.idProducto.toString() : `key-${index}`)}
+      numColumns={2}
+      columnWrapperStyle={styles.row}
       contentContainerStyle={styles.listaProductos}
     />
   );
 };
 
-// Componente principal para manejar los datos y mostrar la lista
-const CrdProductsCategories = ({ collectionHandle, onPress }) => {
-  // Consulta GraphQL para obtener productos por categoría
- 
+
+// Componente principal para consumir la API y renderizar los productos
+const CrdProductsCategories = ({ idCategoria, onPress }) => {
+  const [productos, setProductos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchProductos = async () => {
+    try {
+      const response = await fetch(
+        `https://sought-dassie-partly.ngrok-free.app/api/Producto/listar-por-categoria/${idCategoria}`
+      );
+      const data = await response.json();
+
+      if (response.ok) {
+        // Filtrar y usar solo los primeros 4 productos
+        setProductos(data.slice(0, 4));
+      } else {
+        setError(data.mensaje || "Error al obtener productos");
+      }
+    } catch (err) {
+      setError("No se pudo conectar con el servidor.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProductos();
+  }, [idCategoria]);
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#00A76F" />;
+    return <ActivityIndicator size="large" color="#00A76F" style={{ marginTop: 20 }} />;
   }
 
   if (error) {
-    console.error("Error fetching products:", error);
-    return <Text style={styles.error}>Error al cargar los productos</Text>;
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    );
   }
-
-  // Transformar los datos para adaptarlos al diseño
-  const productos = data.collectionByHandle?.products.edges.map(({ node }) => ({
-    id: node.id,
-    nombre: node.title,
-    precio: parseFloat(node.variants.edges[0]?.node.price.amount || "0").toFixed(2),
-    imagen: node.images.edges[0]?.node.src || "https://via.placeholder.com/160",
-  }));
 
   return (
     <View style={styles.cardCategory}>
-      <Text style={styles.title}>Productos Destacados</Text>
+      <Text style={styles.title}>Productos</Text>
       <ProductosGrid productos={productos} />
-      <TouchableOpacity style={styles.verMas} onPress={onPress} >
+      <TouchableOpacity style={styles.verMas} onPress={onPress}>
         <Text style={styles.verMasTexto}>Ver más</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-// Estilos del componente
+// Estilos
 const styles = StyleSheet.create({
   listaProductos: {
     paddingHorizontal: 1,
@@ -145,7 +170,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "right",
   },
-  error: {
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorText: {
     fontSize: 16,
     color: "red",
     textAlign: "center",
