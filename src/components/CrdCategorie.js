@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndi
 
 const numColumns = 2;
 
-export default function CrdCategorie() {
+export default function CrdCategorie({onPress}) {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -30,7 +30,7 @@ export default function CrdCategorie() {
     }, []);
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.categoryCard}>
+        <TouchableOpacity style={styles.categoryCard} onPress={()=>{}}>
             <Image 
                 source={{ uri: item.imagenUrl }} 
                 style={styles.categoryImage} 

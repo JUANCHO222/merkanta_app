@@ -1,70 +1,71 @@
-import React, { useState } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import React, { useState, useEffect } from 'react';
 import { Text, Image, FlatList, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const GET_PRODUCTS_QUERY = gql`
-  query GetProducts($query: String!) {
-    products(first: 10, query: $query) {
-      edges {
-        node {
-          id
-          title
-          images(first: 1) {
-            edges {
-              node {
-                src
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+const API_URL = 'https://sought-dassie-partly.ngrok-free.app/api/Producto/listar-todos-imagenes';
 
 const ProductSearch = ({ searchText }) => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigation = useNavigation();
-  
-  const { data, loading, error } = useQuery(GET_PRODUCTS_QUERY, {
-    variables: { query: searchText },
-    skip: searchText === '', // No realizar consulta si el texto de búsqueda está vacío
-  });
 
-  const products =
-    data?.products.edges.map((edge) => ({
-      id: edge.node.id,
-      title: edge.node.title,
-      image: edge.node.images.edges[0]?.node?.src || null,
-    })) || [];
+  useEffect(() => {
+    if (searchText.trim() === '') {
+      setProducts([]); // Limpiar lista si el campo está vacío
+      return;
+    }
+
+    fetchProducts();
+  }, [searchText]);
+
+  const fetchProducts = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`${API_URL}?search=${searchText}`);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.mensaje || 'Error al obtener productos');
+      }
+
+      setProducts(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
       {loading ? (
         <Text>Cargando...</Text>
       ) : error ? (
-        <Text>Error: {error.message}</Text>
+        <Text style={styles.errorText}>Error: {error}</Text>
       ) : products.length === 0 ? (
         <Text>No se encontraron productos.</Text>
       ) : (
         <FlatList
           data={products}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.idProducto.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity
-              key={item.id}
               style={styles.card}
-              // onPress={() => console.log("Producto seleccionado:", item.title)}
-              onPress={() => navigation.navigate('InicioTab', { screen:'Producto',    params: { productId: item.id } 
-              })}
-
-              // onPress={() => navigation.navigate('Producto',{productId: item.id})}
+              onPress={() =>
+                navigation.navigate('InicioTab', {
+                  screen: 'Producto',
+                  params: { idProducto: item.idProducto },
+                })
+              }
             >
               <Image
-                source={{ uri: item.image || 'https://via.placeholder.com/150' }}
+                source={{ uri: item.imagenUrl || 'https://via.placeholder.com/150' }}
                 style={styles.cardImage}
               />
-              <Text style={styles.cardTitle}>{item.title}</Text>
+              <Text style={styles.cardTitle}>{item.nombre}</Text>
             </TouchableOpacity>
           )}
         />
@@ -72,8 +73,6 @@ const ProductSearch = ({ searchText }) => {
     </View>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -91,6 +90,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     flexDirection: 'row',
     alignItems: 'center',
+    padding: 10,
   },
   cardImage: {
     width: 90,
@@ -103,6 +103,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
   },
 });
 

@@ -32,8 +32,8 @@ export default function Home() {
         renderItem={() => (
           <>
             <View style={GlobalStyles.content}>
-              <ProductoPorCategoria idCategoria={1} onPress={() => console.log("Ver más productos")} />
-                <Categoria/>
+              <ProductoPorCategoria idCategoria={1} onPress={() => navigation.navigate('Categoria', { idCategoria: 1 })}/>
+                <Categoria />
               <ProductoDestacado />
             </View>
           </>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, ActivityIndicator, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { BtnGlobal, txtEntrada, txtPassword, BtnLink } from '../components';
+import { BtnGlobal, TxtEntrada, TxtPassword, BtnLink } from '../components';
 import ResetPasswordModal from '../components/ModalRecuperacion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -80,14 +80,14 @@ const LoginScreen = () => {
         />
       </View>
 
-      <txtEntrada
+      <TxtEntrada
         keyboardType="email-address"
         placeholder="Correo Electrónico"
         value={email}
         onChangeText={(text) => setEmail(text)}
         iconName="email"
       />
-      <txtPassword
+      <TxtPassword
         secureTextEntry
         placeholder="Contraseña"
         value={password}

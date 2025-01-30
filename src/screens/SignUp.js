@@ -67,9 +67,6 @@ async function CreateUser() {
   }
 }
 
-
-  
-
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -96,8 +93,6 @@ async function CreateUser() {
         <BtnGlobal texto="Registrarse" color="#0abf7e" onPress={CreateUser} largo="100%" ancho={50} />
       </View>
       </ScrollView>
-
-     
     </View>
   );
 }
